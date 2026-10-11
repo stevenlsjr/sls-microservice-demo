@@ -1,0 +1,47 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4
+    command: start-dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 18080:8080
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      # Pin the public URL so the `iss` claim in tokens is stable no matter
+      # which hostname (localhost vs. keycloak) a client used to reach it.
+      KC_HOSTNAME: http://localhost:18080
+      KC_HEALTH_ENABLED: "true"
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    healthcheck:
+      # The keycloak image has no curl; speak HTTP to the management port (9000) via bash.
+      test:
+        - CMD-SHELL
+        - |
+          exec 3<>/dev/tcp/127.0.0.1/9000
+          printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3
+          grep -q '"status": "UP"' <&3
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  # One-shot job: idempotently provisions OIDC clients in the master realm.
+  keycloak-provision:
+    image: quay.io/keycloak/keycloak:26.4
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: ["/bin/bash", "/scripts/provision-clients.sh"]
+    environment:
+      KC_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+    volumes:
+      - ./configs/keycloak/provision-clients.sh:/scripts/provision-clients.sh:ro

@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 import sqlalchemy as sa
 
 from . import rest_models, db
+from .auth import jwt_auth
 from litestar.params import QueryParameter
 import dotenv
 from typing import Annotated
@@ -33,7 +34,7 @@ async def list_movies(
     )
     movies = await db_session.scalars(query)
 
-    return movies
+    return list(movies)
 
 @get('/movies/{id}')
 async def get_movie(
@@ -44,9 +45,13 @@ async def get_movie(
     movie = await db_session.scalar(query)
     if movie is None:
         raise NotImplementedError()
-
+    return movie
 
     
 
 
-app = Litestar([list_movies], plugins=[SQLAlchemyPlugin(config=db.sqlalchemy_config)])
+app = Litestar(
+    [list_movies, get_movie],
+    plugins=[SQLAlchemyPlugin(config=db.sqlalchemy_config)],
+    on_app_init=[jwt_auth.on_app_init],
+)
