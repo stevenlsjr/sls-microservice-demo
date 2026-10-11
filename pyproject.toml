@@ -17,3 +17,8 @@ members = [
 [tool.uv.sources]
 movie-review-rest-api = { workspace = true, editable = true }
 review-service = { workspace = true, editable = true }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17.0",
+]

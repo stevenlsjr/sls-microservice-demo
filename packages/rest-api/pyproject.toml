@@ -8,7 +8,9 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "advanced-alchemy>=1.11.0",
     "alembic>=1.20.0",
+    "dotenv>=0.9.9",
     "litestar[standard]>=2.24.0",
     "msgspec>=0.22.0",
     "psycopg>=3.3.6",

@@ -1,6 +1,7 @@
-from msgspec import Struct
-from uuid import UUID
 from datetime import datetime
+from uuid import UUID
+
+from msgspec import Struct
 
 ##
 # Read-optimizated data model
@@ -9,6 +10,10 @@ from datetime import datetime
 class MovieDetail(Struct):
     id: UUID
     title: str
-    publish_date: datetime
+    released_year: datetime
+    director_name: str
+
+class MovieRatingBody(Struct):
+    movie_id: UUID
     rating: int
 

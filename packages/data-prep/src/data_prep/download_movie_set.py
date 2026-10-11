@@ -2,17 +2,21 @@ import duckdb
 import kagglehub
 from pathlib import Path
 import uuid
+import os
+import dotenv
+dotenv.load_dotenv()
 
 uuid5_ns = uuid.UUID("a82d9361-5e1f-44c1-b6e8-b58ee0c1d869")
 
 def get_movie_uuid5(title: str) -> str:
     return str(uuid.uuid5(uuid5_ns, title))
-
-duckdb.create_function('get_movie_uuid5', get_movie_uuid5)
+db = duckdb.connect("prep.db")
+db.create_function('get_movie_uuid5', get_movie_uuid5)
 
 path = Path(kagglehub.dataset_download("debanganghosh/imdb-dataset"))
-duckdb.sql(f"""
-create table imdb_dataset AS 
+print(path)
+db.sql(f"""
+create table if not exists imdb_dataset AS 
 WITH src AS (
     select * from '{path / "imdb_top_1000.csv"}'
 )
@@ -21,7 +25,8 @@ select
     src.Poster_Link                     as poster_link,
     src.Series_title                    as title,
     coalesce(TRY(src.Released_Year::timestamptz),
-            TRY((src.Released_Year || '01-01')::timestamptz))
+            TRY((src.Released_Year || '-01-01')::timestamptz)
+            )
                 as released_year,
     src.Certificate                     as certificate,
     runtime,
@@ -36,4 +41,44 @@ select
    from src
 """)
 
-print(duckdb.sql("from imdb_dataset").dtypes)
+db.sql(f"""
+create secret pg_secret (
+    type POSTGRES,
+    user '{os.environ['DB_USERNAME']}',
+    password '{os.environ['DB_PASSWORD']}'
+);
+attach '{os.environ['DB_CONNSTRING']}' as runtime_db (TYPE POSTGRES, secret 'pg_secret');
+""")
+
+db.sql("""
+INSERT OR REPLACE into runtime_db.movie
+(
+    id,
+    title,
+    poster_link,
+    released_year,
+    certificate,
+    genre,
+    imdb_rating,
+    overview,
+    meta_score,
+    director_name,
+    gross
+    )
+(
+select
+    id,
+    title,
+    poster_link,
+    coalesce(released_year, '1990-01-01'),
+    certificate,
+    genre,
+    imdb_rating,
+    overview,
+    coalesce(meta_score, 0),
+    director,
+    coalesce(gross, 0)
+
+from imdb_dataset
+)
+""")
