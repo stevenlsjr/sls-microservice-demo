@@ -11,3 +11,16 @@ review service
   - consumes messages from kafka
   - joins message data with (static) movie info
   - writes to read database
+
+
+To start:
+```
+podman compose up
+```
+then setup env files to reflect credentials and environments in the compose system.
+Populate the initial database
+```
+uv sync
+cd packages/data-prep
+uv run --env-file .env -- src/data_prep/download_movie_set.py
+```

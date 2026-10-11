@@ -1,10 +1,44 @@
 import os
+from typing import Self
 
-db_url = os.getenv("DB_URL")
+from msgspec import Struct
 
-# OIDC provider (keycloak master realm in the dev stack). `oidc_issuer` must
-# match the `iss` claim of issued tokens exactly.
-oidc_issuer = os.getenv("OIDC_ISSUER", "http://localhost:18080/realms/master")
-oidc_jwks_url = os.getenv(
-    "OIDC_JWKS_URL", f"{oidc_issuer.rstrip('/')}/protocol/openid-connect/certs"
-)
+
+def get_kafka_options(env=os.environ, strip_blank: bool =False):
+    options = {}
+    for k in env:
+        transformed_key = k.lower()
+        if not transformed_key.startswith('kafka__'):
+            continue
+        option_path = transformed_key.split('__')[1:] # remove kafka
+        option_key = '.'.join(option_path)
+        value = env[k]
+        if value or not strip_blank:
+            options[option_key] = env[k]
+
+    return options
+
+class ConfigSchema(Struct):
+    db_url: str
+    kafka_options: dict
+
+    oidc_issuer: str = "http://localhost:18080/realms/master"
+    oidc_jwks_url: str = (
+        "http://localhost:18080/realms/master/protocol/openid-connect/certs"
+    )
+
+    kafka_bootstrap_url: str = ('http://kafka:9092')
+
+    @classmethod
+    def parse(cls, env=os.environ) -> Self:
+        fields = {
+            "db_url": env.get("DB_URL", None),
+            "oidc_issuer": env.get("OIDC_ISSUER", None) or None,
+            "oidc_jwks_url": env.get("OIDC_JWKS_URL", None) or None,
+            'kafka_options': get_kafka_options(env)
+        }
+
+        return cls(**{k: v for k,v in fields.items() if v is not None})
+
+
+cfg = ConfigSchema.parse(os.environ)

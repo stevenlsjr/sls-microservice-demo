@@ -1,17 +1,18 @@
 from logging import getLogger
+from typing import Annotated
 from uuid import UUID
 
-from litestar import Litestar, get
-from litestar.di import NamedDependency
-from litestar.plugins.sqlalchemy import SQLAlchemyPlugin
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
-import sqlalchemy as sa
-
-from . import rest_models, db
-from .auth import jwt_auth
-from litestar.params import QueryParameter
 import dotenv
-from typing import Annotated
+import sqlalchemy as sa
+from litestar import Litestar, Request, get, put
+from litestar.di import NamedDependency
+from litestar.exceptions import HTTPException
+from litestar.params import QueryParameter
+from litestar.plugins.sqlalchemy import SQLAlchemyPlugin
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from . import db, rest_models
+from .auth import jwt_auth
 
 dotenv.load_dotenv()
 
@@ -36,22 +37,27 @@ async def list_movies(
 
     return list(movies)
 
-@get('/movies/{id}')
+@get('/movies/{id:uuid}')
 async def get_movie(
     db_session: NamedDependency[AsyncSession],
     id: UUID
 ) -> db.Movie:
     query = sa.select(db.Movie).where(db.Movie.id == id)
     movie = await db_session.scalar(query)
+
     if movie is None:
-        raise NotImplementedError()
+        raise HTTPException(status_code=404, detail='not found')
     return movie
 
-    
+@put('/movies/{id:uuid}/rate')
+async def rate_movie(request: Request, id: UUID, data: rest_models.MovieRatingBody) -> None:
+    data.movie_id = id
+    raise NotImplementedError()
 
 
 app = Litestar(
-    [list_movies, get_movie],
+    [list_movies, get_movie, rate_movie],
     plugins=[SQLAlchemyPlugin(config=db.sqlalchemy_config)],
     on_app_init=[jwt_auth.on_app_init],
+    middleware=[jwt_auth.middleware]
 )

@@ -13,13 +13,8 @@ from litestar.plugins.sqlalchemy import (
 from sqlalchemy import ForeignKey, func, select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from litestar.plugins.sqlalchemy import (
-    AsyncSessionConfig,
-    SQLAlchemyAsyncConfig,
-    SQLAlchemyPlugin,
-    base,
-)
-from .. import config
+
+from ..config import cfg
 
 
 class Movie(base.UUIDBase):
@@ -40,7 +35,7 @@ class Movie(base.UUIDBase):
 
 session_config = AsyncSessionConfig(expire_on_commit=False)
 sqlalchemy_config = SQLAlchemyAsyncConfig(
-    connection_string=config.db_url, session_config=session_config, create_all=True
+    connection_string=cfg.db_url, session_config=session_config, create_all=True
 
 )  # Create 'async_session' dependency.
 

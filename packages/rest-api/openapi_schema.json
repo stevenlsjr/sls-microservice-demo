@@ -1,0 +1,456 @@
+{
+    "info": {
+        "title": "Litestar API",
+        "version": "1.0.0"
+    },
+    "openapi": "3.1.0",
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "paths": {
+        "/movies": {
+            "get": {
+                "summary": "ListMovies",
+                "operationId": "MoviesListMovies",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 1000.0,
+                            "exclusiveMinimum": 1.0,
+                            "default": 10
+                        },
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "allowReserved": false
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0.0,
+                            "default": 0
+                        },
+                        "required": false,
+                        "deprecated": false,
+                        "allowEmptyValue": false,
+                        "allowReserved": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request fulfilled, document follows",
+                        "headers": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/ListMoviesMovieResponseBody"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request syntax or unsupported method",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer"
+                                        },
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "extra": {
+                                            "additionalProperties": {},
+                                            "type": [
+                                                "null",
+                                                "object",
+                                                "array"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": [
+                                        "detail",
+                                        "status_code"
+                                    ],
+                                    "description": "Validation Exception",
+                                    "examples": [
+                                        {
+                                            "status_code": 400,
+                                            "detail": "Bad Request",
+                                            "extra": {}
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/movies/{id}": {
+            "get": {
+                "summary": "GetMovie",
+                "operationId": "MoviesIdGetMovie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true,
+                        "deprecated": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request fulfilled, document follows",
+                        "headers": {},
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetMovieMovieResponseBody"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request syntax or unsupported method",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer"
+                                        },
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "extra": {
+                                            "additionalProperties": {},
+                                            "type": [
+                                                "null",
+                                                "object",
+                                                "array"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": [
+                                        "detail",
+                                        "status_code"
+                                    ],
+                                    "description": "Validation Exception",
+                                    "examples": [
+                                        {
+                                            "status_code": 400,
+                                            "detail": "Bad Request",
+                                            "extra": {}
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/movies/{id}/rate": {
+            "put": {
+                "summary": "RateMovie",
+                "operationId": "MoviesIdRateRateMovie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true,
+                        "deprecated": false
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MovieRatingBody"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Request fulfilled, document follows",
+                        "headers": {}
+                    },
+                    "400": {
+                        "description": "Bad request syntax or unsupported method",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer"
+                                        },
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "extra": {
+                                            "additionalProperties": {},
+                                            "type": [
+                                                "null",
+                                                "object",
+                                                "array"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object",
+                                    "required": [
+                                        "detail",
+                                        "status_code"
+                                    ],
+                                    "description": "Validation Exception",
+                                    "examples": [
+                                        {
+                                            "status_code": 400,
+                                            "detail": "Bad Request",
+                                            "extra": {}
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GetMovieMovieResponseBody": {
+                "properties": {
+                    "certificate": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "genre": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "imdb_rating": {
+                        "oneOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "overview": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "user_rating": {
+                        "oneOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "poster_link": {
+                        "type": "string"
+                    },
+                    "released_year": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "meta_score": {
+                        "type": "integer"
+                    },
+                    "director_name": {
+                        "type": "string"
+                    },
+                    "gross": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "director_name",
+                    "gross",
+                    "meta_score",
+                    "poster_link",
+                    "released_year",
+                    "title"
+                ],
+                "title": "GetMovieMovieResponseBody"
+            },
+            "ListMoviesMovieResponseBody": {
+                "properties": {
+                    "certificate": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "genre": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "imdb_rating": {
+                        "oneOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "overview": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "user_rating": {
+                        "oneOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "poster_link": {
+                        "type": "string"
+                    },
+                    "released_year": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "meta_score": {
+                        "type": "integer"
+                    },
+                    "director_name": {
+                        "type": "string"
+                    },
+                    "gross": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "director_name",
+                    "gross",
+                    "meta_score",
+                    "poster_link",
+                    "released_year",
+                    "title"
+                ],
+                "title": "ListMoviesMovieResponseBody"
+            },
+            "MovieRatingBody": {
+                "properties": {
+                    "movie_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "rating": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "movie_id",
+                    "rating"
+                ],
+                "title": "MovieRatingBody"
+            }
+        },
+        "securitySchemes": {
+            "BearerToken": {
+                "type": "http",
+                "description": "JWT api-key authentication and authorization.",
+                "name": "Authorization",
+                "scheme": "Bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerToken": []
+        }
+    ]
+}

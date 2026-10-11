@@ -9,11 +9,11 @@ from jwt import PyJWKClient, PyJWKClientConnectionError, PyJWKClientError
 from litestar.connection import ASGIConnection
 from litestar.security.jwt import JWTAuth, Token
 
-from . import config
+from .config import cfg
 
 # PyJWKClient caches the fetched key set (default 5 min) and re-fetches when it
 # sees an unknown `kid`, so key rotation is picked up automatically.
-_jwks_client = PyJWKClient(config.oidc_jwks_url)
+_jwks_client = PyJWKClient(cfg.oidc_jwks_url)
 
 
 class OIDCToken(Token):
@@ -60,7 +60,7 @@ jwt_auth = JWTAuth[User](
     token_secret="unused",  # required by litestar; verification uses the JWKS
     algorithm="RS256",
     token_cls=OIDCToken,
-    accepted_issuers=[config.oidc_issuer],
+    accepted_issuers=[cfg.oidc_issuer],
     # Reads are public for now; anything else (writes) requires a bearer token
     # and exposes the caller as `request.user`.
     exclude_http_methods=["GET", "HEAD", "OPTIONS"],
