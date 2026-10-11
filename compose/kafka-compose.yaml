@@ -1,0 +1,78 @@
+services:
+  kafka:
+    image: quay.io/debezium/kafka:${DEBEZIUM_VERSION:-3.5.1}
+    ports:
+      - 9092:9092
+      - 9093:9093
+    environment:
+      - CLUSTER_ID=oh-sxaDRTcyAr6pFRbXyzA
+      - NODE_ID=1
+      - NODE_ROLE=combined
+      - KAFKA_CONTROLLER_QUORUM_BOOTSTRAP_SERVERS=kafka:9093
+      - KAFKA_LISTENERS=PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_LOG_DIR=/var/lib/kafka/data
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  apicurio:
+    image: apicurio/apicurio-registry-mem:2.6.13.Final
+    ports:
+      - 8080:8080
+
+  # connect:
+  #   user: root
+  #   build:
+  #    context: .
+  #    dockerfile: dbz-connect.dockerfile
+  #    tags: [debezium]
+  #   # image: quay.io/debezium/connect:${DEBEZIUM_VERSION:-3.5.1}
+  #   ports:
+  #     - 8083:8083
+  #   networks:
+  #     default: {}
+  #     # rustfs-network: {}
+  #   depends_on:
+  #     - kafka
+  #     - apicurio
+  #   environment:
+  #     - BOOTSTRAP_SERVERS=kafka:9092
+  #     - GROUP_ID=1
+  #     - CONFIG_STORAGE_TOPIC=my_connect_configs
+  #     - OFFSET_STORAGE_TOPIC=my_connect_offsets
+  #     - STATUS_STORAGE_TOPIC=my_connect_statuses
+  #     - ENABLE_APICURIO_CONVERTERS=true
+  #     - KAFKA_CONNECT_PLUGINS_DIR=/kafka/connect,/opt/connnector-plugins
+  #     - AWS_ACCESS_KEY_ID=rustfsadmin
+  #     - AWS_SECRET_ACCESS_KEY=rustfsadmin
+  #   volumes:
+  #     - ./vol/connector-plugins:/mnt/connector-plugins:Z
+
+  kafka-ui:
+    image: kafbat/kafka-ui:096140b
+    ports:
+      - 8084:8080
+    environment:
+      DYNAMIC_CONFIG_ENABLED: "true"
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      # KAFKA_CLUSTERS_0_METRICS_PORT: 9997
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://apicurio:8080/apis/ccompat/v7
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: "debezium-connect"
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: "http://connect:8083"
+
+    volumes:
+      - kui:/etc/kafkaui/
+volumes:
+  kui:
+  kafka-data:
