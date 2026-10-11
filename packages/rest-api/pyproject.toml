@@ -1,5 +1,5 @@
 [project]
-name = "sls-microservices-web-api"
+name = "movie-review-rest-api"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -8,12 +8,15 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.20.0",
     "litestar[standard]>=2.24.0",
     "msgspec>=0.22.0",
+    "psycopg>=3.3.6",
+    "sqlalchemy>=2.1.4",
 ]
 
 [project.scripts]
-sls-microservices-web-api = "sls_microservices_web_api:main"
+movie-review-rest-api = "movie_review_rest_api:main"
 
 [build-system]
 requires = ["uv_build>=0.12.15,<0.13.0"]

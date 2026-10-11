@@ -1,0 +1,19 @@
+[project]
+name = "sls-microservice-poc"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "movie-review-rest-api",
+    "review-service",
+]
+
+[tool.uv.workspace]
+members = [
+    "packages/rest-api",
+    "packages/review-service",
+    "packages/data-prep",
+]
+
+[tool.uv.sources]
+movie-review-rest-api = { workspace = true, editable = true }
+review-service = { workspace = true, editable = true }

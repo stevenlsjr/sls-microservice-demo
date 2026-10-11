@@ -403,6 +403,29 @@ wheels = [
 ]
 
 [[package]]
+name = "movie-review-rest-api"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "litestar", extra = ["standard"] },
+    { name = "msgspec" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "litestar", extras = ["standard"], specifier = ">=2.24.0" },
+    { name = "msgspec", specifier = ">=0.22.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
+
+[[package]]
 name = "msgspec"
 version = "0.22.0"
 source = { registry = "https://pypi.org/simple" }
@@ -755,29 +778,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/96/3e/5688fdd83aea416de
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b5/51/b2b91aec091e86bc961e5164f00207d89f133cc82b5ddad541d2132ea819/rich_click-1.9.9-py3-none-any.whl", hash = "sha256:365e7a9d0adb42e41ea832a0a12e02c44c079a26536dee688125eb9814f97274", size = 71910, upload-time = "2026-09-05T19:20:13.587Z" },
 ]
-
-[[package]]
-name = "sls-microservices-web-api"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "litestar", extra = ["standard"] },
-    { name = "msgspec" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "litestar", extras = ["standard"], specifier = ">=2.24.0" },
-    { name = "msgspec", specifier = ">=0.22.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "sniffio"
