@@ -8,6 +8,7 @@ import typer as ty
 from review_service import consumer
 import asyncio
 import os
+
 log = logging.getLogger(__name__)
 
 
@@ -19,4 +20,5 @@ def main():
     asyncio.run(consumer.run_consumer())
 
 if __name__=='__main__':
+    logging.basicConfig()
     app()

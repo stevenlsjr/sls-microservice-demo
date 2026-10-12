@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 import os
 from shared_utils.config import get_kafka_options
-from advanced_alchemy.config import SQLAlchemyAsyncConfig
+from advanced_alchemy.config import SQLAlchemyAsyncConfig, AlembicAsyncConfig
 
+from review_service import db_models  # noqa: F401
 
 @dataclass(kw_only=True)
 class Config:
@@ -14,7 +15,7 @@ class Config:
 cfg = Config(
     kafka_options=get_kafka_options(os.environ),
     kafka_topic_prefix=os.getenv("KAFKA_TOPIC_PREFIX"),
-    db_url=os.getenv("DB_URL")
+    db_url=os.getenv("DB_URL"),
 )
 
 sqlalchemy_config = SQLAlchemyAsyncConfig(connection_string=cfg.db_url)
