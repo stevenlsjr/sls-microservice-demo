@@ -73,7 +73,7 @@ app = Litestar(
     plugins=[
         SQLAlchemyPlugin(config=db.sqlalchemy_config),
         producer_service.KafkaInitPlugin(),
-        OpenTelemetryPlugin(OpenTelemetryConfig()),
+        OpenTelemetryPlugin(),
     ],
     on_app_init=[jwt_auth.on_app_init],
     middleware=[jwt_auth.middleware],

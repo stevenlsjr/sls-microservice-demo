@@ -1,2 +1,5 @@
-def main() -> None:
-    print("Hello from review-service!")
+import logging
+
+
+log = logging.getLogger(__name__)
+

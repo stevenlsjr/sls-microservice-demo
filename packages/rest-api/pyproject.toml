@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [{ name = "Steve Shea", email = "stevenlsjr@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
-    "advanced-alchemy>=1.11.0",
+    "advanced-alchemy[cli]>=1.11.0",
     "alembic>=1.20.0",
     "asgiref>=3.12.1",
     "confluent-kafka>=2.16.0",
@@ -27,6 +27,15 @@ dependencies = [
     "opentelemetry-instrumentation-urllib==0.66b1",
     "opentelemetry-instrumentation-urllib3==0.66b1",
     "opentelemetry-instrumentation-wsgi==0.66b1",
+    "opentelemetry-instrumentation-asgi==0.66b1",
+    "opentelemetry-instrumentation-click==0.66b1",
+    "opentelemetry-instrumentation-confluent-kafka==0.66b1",
+    "opentelemetry-instrumentation-httpx==0.66b1",
+    "opentelemetry-instrumentation-jinja2==0.66b1",
+    "opentelemetry-instrumentation-psycopg==0.66b1",
+    "opentelemetry-instrumentation-sqlalchemy==0.66b1",
+    "opentelemetry-exporter-otlp>=1.45.1",
+    "opentelemetry-distro>=0.66b1",
 ]
 
 [project.scripts]

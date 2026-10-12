@@ -6,21 +6,30 @@ readme = "README.md"
 authors = [{ name = "Steve Shea", email = "stevenlsjr@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
+        "advanced-alchemy[cli]>=1.11.0",
+        "confluent-kafka>=2.16.0",
+        "opentelemetry-distro>=0.66b1",
+        "opentelemetry-exporter-otlp>=1.45.1",
         "opentelemetry-instrumentation-asyncio==0.66b1",
-    "opentelemetry-instrumentation-dbapi==0.66b1",
-    "opentelemetry-instrumentation-exceptions==0.66b1",
-    "opentelemetry-instrumentation-grpc==0.66b1",
-    "opentelemetry-instrumentation-logging==0.66b1",
-    "opentelemetry-instrumentation-requests==0.66b1",
-    "opentelemetry-instrumentation-sqlite3==0.66b1",
-    "opentelemetry-instrumentation-threading==0.66b1",
-    "opentelemetry-instrumentation-urllib==0.66b1",
-    "opentelemetry-instrumentation-urllib3==0.66b1",
-    "opentelemetry-instrumentation-wsgi==0.66b1",
+        "opentelemetry-instrumentation-confluent-kafka==0.66b1",
+        "opentelemetry-instrumentation-dbapi==0.66b1",
+        "opentelemetry-instrumentation-exceptions==0.66b1",
+        "opentelemetry-instrumentation-grpc==0.66b1",
+        "opentelemetry-instrumentation-logging==0.66b1",
+        "opentelemetry-instrumentation-requests==0.66b1",
+        "opentelemetry-instrumentation-sqlite3==0.66b1",
+        "opentelemetry-instrumentation-threading==0.66b1",
+        "opentelemetry-instrumentation-urllib==0.66b1",
+        "opentelemetry-instrumentation-urllib3==0.66b1",
+        "opentelemetry-instrumentation-wsgi==0.66b1",
+        "psycopg>=3.3.6",
+        "shared-utils",
+        "sqlalchemy>=2.1.4",
+        "typer>=0.27.3",
 ]
 
 [project.scripts]
-review-service = "review_service:main"
+review-service = "review_service:app"
 
 
 [build-system]
@@ -29,4 +38,11 @@ build-backend = "uv_build"
 
 
 [tool.uv]
-default-groups = ["dev" ]
+
+[tool.uv.sources]
+shared-utils = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

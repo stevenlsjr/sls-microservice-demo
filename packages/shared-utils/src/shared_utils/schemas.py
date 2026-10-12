@@ -9,3 +9,4 @@ class MovieRatingEvent(Struct):
     user_id: UUID
     rating: int
     type: Literal['movie-rating'] = 'movie-rating'
+

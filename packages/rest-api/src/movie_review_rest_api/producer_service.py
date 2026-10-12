@@ -10,6 +10,7 @@ from shared_utils.schemas import MovieRatingEvent
 from .config import cfg
 import msgspec
 log = getLogger(__name__)
+kafka_log = getLogger('kafka')
 
 class KafkaRatingsPublisher:
     topic_name: str
@@ -46,7 +47,9 @@ class KafkaInitPlugin(InitPlugin):
     
     async def setup_producer(self):
         from .config import cfg
-        config = cfg.kafka_options | {}
+        config = cfg.kafka_options | {
+            'logger': kafka_log
+        }
         self._producer = AIOProducer(config)
 
     async def on_shutdown(self, app):
