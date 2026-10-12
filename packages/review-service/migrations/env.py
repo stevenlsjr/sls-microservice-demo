@@ -1,17 +1,15 @@
 import asyncio
 from typing import TYPE_CHECKING, cast
 
+from advanced_alchemy.base import metadata_registry
+from alembic import context
 from alembic.autogenerate import rewriter
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import AsyncEngine, async_engine_from_config
 
-from advanced_alchemy.base import metadata_registry
-from alembic import context
-
 if TYPE_CHECKING:
-    from sqlalchemy.engine import Connection
-
     from advanced_alchemy.alembic.commands import AlembicCommandConfig
+    from sqlalchemy.engine import Connection
 
 __all__ = ("do_run_migrations", "run_migrations_offline", "run_migrations_online")
 

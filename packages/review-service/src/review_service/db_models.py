@@ -1,9 +1,9 @@
 from datetime import datetime
+from uuid import UUID
 
 from advanced_alchemy.base import UUIDBase
-from uuid import UUID
+from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped
-from sqlalchemy import Column, Integer, UniqueConstraint, Index
 
 
 class Base(DeclarativeBase): ...

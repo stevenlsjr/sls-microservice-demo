@@ -1,14 +1,14 @@
 from datetime import datetime
 from logging import getLogger
 
+import msgspec
 from confluent_kafka.aio import AIOConsumer
 from shared_utils.schemas import MovieRatingEvent
-import msgspec
+
 from review_service.config import sqlalchemy_config
 from review_service.db_models import MovieRating
-import sqlalchemy as sa
-from .config import cfg
 
+from .config import cfg
 
 log = getLogger(__name__)
 
@@ -34,7 +34,7 @@ async def run_consumer():
                     continue
 
                 # Process the message
-                ts_type, ts_epoch = msg.timestamp()
+                _ts_type, ts_epoch = msg.timestamp()
 
                 timestamp = datetime.fromtimestamp(ts_epoch / 1000)
                 if msg.value() is None:
@@ -54,7 +54,7 @@ async def run_consumer():
 
 
 async def process_movie_rating(event: MovieRatingEvent, ts: datetime):
-    engine = sqlalchemy_config.get_engine()
+    sqlalchemy_config.get_engine()
     log.debug(
         "[%s] process_movie_rating %s ",
         ts.isoformat(),

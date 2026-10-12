@@ -1,9 +1,11 @@
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
+from advanced_alchemy.config import SQLAlchemyAsyncConfig
 from shared_utils.config import get_kafka_options
-from advanced_alchemy.config import SQLAlchemyAsyncConfig, AlembicAsyncConfig
 
 from review_service import db_models  # noqa: F401
+
 
 @dataclass(kw_only=True)
 class Config:

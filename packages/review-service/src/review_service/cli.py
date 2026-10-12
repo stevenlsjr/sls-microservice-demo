@@ -1,13 +1,14 @@
-import os
 import logging
+
 # super ugly, but can't get otel to configure proper log level
 # otherwise
 logging.root.setLevel(logging.DEBUG)
 
-import typer as ty
-from review_service import consumer
 import asyncio
-import os
+
+import typer as ty
+
+from review_service import consumer
 
 log = logging.getLogger(__name__)
 
