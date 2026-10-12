@@ -3,22 +3,35 @@ name = "movie-review-rest-api"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "Steve Shea", email = "stevenlsjr@gmail.com" }
-]
+authors = [{ name = "Steve Shea", email = "stevenlsjr@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
     "advanced-alchemy>=1.11.0",
     "alembic>=1.20.0",
+    "asgiref>=3.12.1",
+    "confluent-kafka>=2.16.0",
     "dotenv>=0.9.9",
-    "litestar[jwt,standard]>=2.24.0",
+    "litestar[jwt,standard,opentelemetry]>=2.24.0",
     "msgspec>=0.22.0",
     "psycopg>=3.3.6",
+    "shared-utils",
     "sqlalchemy>=2.1.4",
+    "opentelemetry-instrumentation-asyncio==0.66b1",
+    "opentelemetry-instrumentation-dbapi==0.66b1",
+    "opentelemetry-instrumentation-exceptions==0.66b1",
+    "opentelemetry-instrumentation-grpc==0.66b1",
+    "opentelemetry-instrumentation-logging==0.66b1",
+    "opentelemetry-instrumentation-requests==0.66b1",
+    "opentelemetry-instrumentation-sqlite3==0.66b1",
+    "opentelemetry-instrumentation-threading==0.66b1",
+    "opentelemetry-instrumentation-urllib==0.66b1",
+    "opentelemetry-instrumentation-urllib3==0.66b1",
+    "opentelemetry-instrumentation-wsgi==0.66b1",
 ]
 
 [project.scripts]
 movie-review-rest-api = "movie_review_rest_api:main"
+
 
 [build-system]
 requires = ["uv_build>=0.12.15,<0.13.0"]
@@ -29,3 +42,8 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.17.0",
 ]
+
+[tool.uv]
+default-groups = ["dev"]
+[tool.uv.sources]
+shared-utils = { workspace = true }

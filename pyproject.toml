@@ -5,6 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
     "movie-review-rest-api",
     "review-service",
+    "shared-utils",
 ]
 
 [tool.uv.workspace]
@@ -12,13 +13,16 @@ members = [
     "packages/rest-api",
     "packages/review-service",
     "packages/data-prep",
+    "packages/shared-utils",
 ]
 
 [tool.uv.sources]
 movie-review-rest-api = { workspace = true, editable = true }
 review-service = { workspace = true, editable = true }
+shared-utils = { workspace = true }
 
 [dependency-groups]
 dev = [
     "ruff>=0.17.0",
 ]
+ 

@@ -18,6 +18,7 @@ services:
       KC_HEALTH_ENABLED: "true"
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_TELEMETRY_ENDPOINT: http://otel-collector:4317
     healthcheck:
       # The keycloak image has no curl; speak HTTP to the management port (9000) via bash.
       test:

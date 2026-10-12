@@ -3,15 +3,30 @@ name = "review-service"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "Steve Shea", email = "stevenlsjr@gmail.com" }
-]
+authors = [{ name = "Steve Shea", email = "stevenlsjr@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+        "opentelemetry-instrumentation-asyncio==0.66b1",
+    "opentelemetry-instrumentation-dbapi==0.66b1",
+    "opentelemetry-instrumentation-exceptions==0.66b1",
+    "opentelemetry-instrumentation-grpc==0.66b1",
+    "opentelemetry-instrumentation-logging==0.66b1",
+    "opentelemetry-instrumentation-requests==0.66b1",
+    "opentelemetry-instrumentation-sqlite3==0.66b1",
+    "opentelemetry-instrumentation-threading==0.66b1",
+    "opentelemetry-instrumentation-urllib==0.66b1",
+    "opentelemetry-instrumentation-urllib3==0.66b1",
+    "opentelemetry-instrumentation-wsgi==0.66b1",
+]
 
 [project.scripts]
 review-service = "review_service:main"
 
+
 [build-system]
 requires = ["uv_build>=0.12.15,<0.13.0"]
 build-backend = "uv_build"
+
+
+[tool.uv]
+default-groups = ["dev" ]
