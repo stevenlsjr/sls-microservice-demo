@@ -429,6 +429,7 @@ dependencies = [
     { name = "kagglehub" },
     { name = "numpy" },
     { name = "psycopg" },
+    { name = "python-dotenv" },
     { name = "sqlalchemy" },
 ]
 
@@ -439,6 +440,7 @@ requires-dist = [
     { name = "kagglehub", specifier = ">=1.0.2" },
     { name = "numpy", specifier = ">=2.5.4" },
     { name = "psycopg", specifier = ">=3.3.6" },
+    { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "sqlalchemy", specifier = ">=2.1.4" },
 ]
 
@@ -2075,7 +2077,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=9.1.1" },
-    { name = "watchdog", extras = ["cli"], specifier = ">=6.0.0" },
+    { name = "watchdog", specifier = ">=6.0.0" },
 ]
 
 [[package]]

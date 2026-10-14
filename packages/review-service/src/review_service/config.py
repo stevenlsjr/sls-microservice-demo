@@ -13,6 +13,9 @@ class Config:
     kafka_topic_prefix: str = "movie-review"
     db_url: str
 
+    def get_topic(self, suffix: str):
+        return f"{self.kafka_topic_prefix}.{suffix}"
+
 
 cfg = Config(
     kafka_options=get_kafka_options(os.environ),

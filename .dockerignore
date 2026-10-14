@@ -1,0 +1,15 @@
+.git
+.gitignore
+**/.venv
+**/.env
+**/__pycache__
+**/*.py[cod]
+**/.ruff_cache
+**/.pytest_cache
+**/.DS_Store
+compose/
+docker-compose.yaml
+**/Dockerfile
+.dockerignore
+packages/data-prep/prep.db*
+**/openapi_schema.json

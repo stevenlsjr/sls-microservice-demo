@@ -29,7 +29,7 @@ dependencies = [
 ]
 
 [project.scripts]
-review-service = "review_service:app"
+review-service = "review_service.cli:app"
 
 
 [build-system]
