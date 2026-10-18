@@ -63,4 +63,4 @@ WORKDIR /work
 RUN chown app:app /work
 COPY --from=app --chown=app:app /app/.venv /app/.venv
 USER app
-CMD ["python", "-m", "data_prep.download_movie_set"]
+CMD ["python"]

@@ -52,18 +52,20 @@ services:
       keycloak:
         condition: service_healthy
     restart: "no"
+    user: 'root'
     entrypoint:
       [
         python,
-        app/src/data_prep/setup_keycloak.py,
+        -m,
+        data_prep.setup_keycloak,
         "--realm-import-json",
-        scripts/realm-import.json,
-        '-o',
-        '/scripts/app-client-secret'
+        /scripts/realm-export.json,
+        "-o",
+        "/scripts/app-client-secret",
       ]
     environment:
-      KC_URL: http://keycloak:8080
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
     volumes:
       - ./configs/keycloak/:/scripts/
