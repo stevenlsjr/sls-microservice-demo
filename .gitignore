@@ -221,3 +221,5 @@ __marimo__/
 .streamlit/secrets.toml
 packages/data-prep/prep.db
 compose/configs/keycloak/app-client-secret
+# duckdb wal files
+**/*.wal

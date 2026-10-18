@@ -14,7 +14,7 @@ from sqlalchemy import ForeignKey, func, select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import TSVECTOR
+from sqlalchemy.dialects.postgresql import TSVECTOR, to_tsvector
 
 from ..config import cfg
 
@@ -37,7 +37,18 @@ class Movie(base.UUIDBase):
     gross: Mapped[str]
     user_rating: Mapped[int | None] = None
     user_rating_count: Mapped[int] = 0
-    _search_index: Mapped[TSVector] = mapped_column(TSVector())
+    _search_index: Mapped[TSVector] = mapped_column(
+        TSVECTOR(),
+        nullable=True
+    )
+
+    __table_args__ = (
+        sa.Index(
+            "movie_search_index",
+            "_search_index",
+            postgresql_using="gin",
+        ),
+    )
 
 
 session_config = AsyncSessionConfig(expire_on_commit=False)
