@@ -25,12 +25,12 @@ upsert_client() {
   fi
 }
 
-# Rest client: public client (no secret). Supports the auth-code flow for
+# Rest client: private client. Supports the auth-code flow for
 # browser apps and the password grant so tokens are easy to mint with curl in dev.
 upsert_client movie-review-rest-client \
   -s enabled=true \
   -s protocol=openid-connect \
-  -s publicClient=true \
+  -s publicClient=false \
   -s standardFlowEnabled=true \
   -s directAccessGrantsEnabled=true \
   -s 'redirectUris=["http://localhost:*"]' \

@@ -9,9 +9,9 @@ class ConfigSchema(Struct):
     db_url: str
     kafka_options: dict
 
-    oidc_issuer: str = "http://localhost:18080/realms/master"
+    oidc_issuer: str = "http://localhost:18080/realms/microservice-app"
     oidc_jwks_url: str = (
-        "http://localhost:18080/realms/master/protocol/openid-connect/certs"
+        "http://localhost:18080/realms/microservice-app/protocol/openid-connect/certs"
     )
 
     kafka_bootstrap_url: str = "http://kafka:9092"

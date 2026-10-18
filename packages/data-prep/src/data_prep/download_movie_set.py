@@ -1,9 +1,11 @@
+import os
+import uuid
+from pathlib import Path
+
+import dotenv
 import duckdb
 import kagglehub
-from pathlib import Path
-import uuid
-import os
-import dotenv
+
 dotenv.load_dotenv()
 
 uuid5_ns = uuid.UUID("a82d9361-5e1f-44c1-b6e8-b58ee0c1d869")

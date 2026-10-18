@@ -1,6 +1,10 @@
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:26.4
+    image: custom-keycloak
+    build:
+      context: ./
+      dockerfile: keycloak.dockerfile
+
     command: start-dev
     depends_on:
       postgres:
@@ -19,6 +23,12 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
       KC_TELEMETRY_ENDPOINT: http://otel-collector:4317
+      kete.enabled: "true"
+      kete.routes.kafka.destination.kind: kafka
+      kete.routes.kafka.destination.bootstrap.servers: kafka:9092
+      kete.routes.kafka.destination.topic: keycloak-events
+      # kete.routes.kafka.realm-matchers.filter: 'list:microservice-app'
+      kete.routes.kafka.event-matchers.filter: "list:LOGIN,LOGOUT,REGISTER,UPDATE_EMAIL,UPDATE_PROFILE"
     healthcheck:
       # The keycloak image has no curl; speak HTTP to the management port (9000) via bash.
       test:
@@ -34,15 +44,26 @@ services:
 
   # One-shot job: idempotently provisions OIDC clients in the master realm.
   keycloak-provision:
-    image: quay.io/keycloak/keycloak:26.4
+    image: data-prep
+    build:
+      context: ..
+      dockerfile: packages/data-prep/Dockerfile
     depends_on:
       keycloak:
         condition: service_healthy
     restart: "no"
-    entrypoint: ["/bin/bash", "/scripts/provision-clients.sh"]
+    entrypoint:
+      [
+        python,
+        app/src/data_prep/setup_keycloak.py,
+        "--realm-import-json",
+        scripts/realm-import.json,
+        '-o',
+        '/scripts/app-client-secret'
+      ]
     environment:
       KC_URL: http://keycloak:8080
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
     volumes:
-      - ./configs/keycloak/provision-clients.sh:/scripts/provision-clients.sh:ro
+      - ./configs/keycloak/:/scripts/

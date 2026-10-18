@@ -220,3 +220,4 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 packages/data-prep/prep.db
+compose/configs/keycloak/app-client-secret
