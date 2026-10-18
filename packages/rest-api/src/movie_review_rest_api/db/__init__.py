@@ -13,8 +13,14 @@ from litestar.plugins.sqlalchemy import (
 from sqlalchemy import ForeignKey, func, select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import TSVECTOR
 
 from ..config import cfg
+
+
+class TSVector(sa.types.TypeDecorator):
+    impl = TSVECTOR
 
 
 class Movie(base.UUIDBase):
@@ -29,13 +35,12 @@ class Movie(base.UUIDBase):
     meta_score: Mapped[int]
     director_name: Mapped[str]
     gross: Mapped[str]
-    user_rating: Mapped[int | None]=None
-    user_rating_count: Mapped[int]=0
+    user_rating: Mapped[int | None] = None
+    user_rating_count: Mapped[int] = 0
+    _search_index: Mapped[TSVector] = mapped_column(TSVector())
 
 
 session_config = AsyncSessionConfig(expire_on_commit=False)
 sqlalchemy_config = SQLAlchemyAsyncConfig(
     connection_string=cfg.db_url, session_config=session_config, create_all=True
-
 )  # Create 'async_session' dependency.
-
