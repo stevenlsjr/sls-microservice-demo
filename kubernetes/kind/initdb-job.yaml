@@ -1,0 +1,47 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/job/
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-db
+  namespace: microservice-demo
+
+  labels:
+    app: init-db
+spec:
+  template:
+    metadata:
+      name: init-db
+      labels:
+        app: init-db
+    spec:
+      containers:
+      - name: init-db
+        image: postgres:18-alpine
+        command:
+        - 'sh'
+        - '-c'
+        - |-
+            psql -h postgres -p 5432  <<EOF
+             create database keycloak;
+             create database movie_review;
+            EOF
+        env:
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_USER
+              name: psql-env
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PASSWORD
+              name: psql-env
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: localtime
+        hostPath:
+          path: /usr/share/zoneinfo/Asia/Taipei
+      restartPolicy: OnFailure
+      dnsPolicy: ClusterFirst

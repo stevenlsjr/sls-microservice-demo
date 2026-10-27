@@ -1,0 +1,15 @@
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry3
+metadata:
+  name: apicurio
+  namespace: apicurio-registry
+
+spec:
+  app:
+    ingress:
+      enabled: false
+      host: simple-app.apps.cluster.example
+  ui:
+    ingress:
+      enabled: false
+      host: simple-ui.apps.cluster.example

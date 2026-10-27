@@ -1,0 +1,23 @@
+apiVersion: k8s.keycloak.org/v2beta1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: microservice-demo
+
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: postgres-db
+    usernameSecret:
+      name: psql-env
+      key: POSTGRES_USER
+    passwordSecret:
+      name: psql-env
+      key: POSTGRES_PASSWORD
+  http:
+    tlsSecret: example-tls-secret
+  hostname:
+    hostname: test.keycloak.org
+  proxy:
+    headers: xforwarded
