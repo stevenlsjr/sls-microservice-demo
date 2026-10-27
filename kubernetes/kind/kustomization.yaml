@@ -6,9 +6,10 @@ labels:
       app.kubernetes.io/managed-by: kustomize
 generatorOptions:
   disableNameSuffixHash: true
-
+configMapGenerator: []
 secretGenerator:
   - name: psql-env
+    namespace: microservice-demo
     envs:
       - ./psql.secret.env
 resources:

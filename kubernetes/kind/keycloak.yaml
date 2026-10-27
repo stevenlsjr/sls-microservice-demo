@@ -16,8 +16,26 @@ spec:
       name: psql-env
       key: POSTGRES_PASSWORD
   http:
-    tlsSecret: example-tls-secret
+    httpEnabled: true
   hostname:
+    strict: false
     hostname: test.keycloak.org
   proxy:
     headers: xforwarded
+  features:
+    enabled:
+      - client-admin-api:v2
+---
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: keycloak-dev-reaml
+  namespace: microservice-demo
+
+spec:
+  keycloakCRName: keycloak
+  realm:
+    id: dev-realm
+    realm: dev-realm
+    displayName: DevRealm
+    enabled: true
