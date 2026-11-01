@@ -16,8 +16,9 @@ OPENSEARCH_AUTH = os.getenv("OPENSEARCH_AUTH", "")
 
 
 def create_index_template(client: OpenSearch):
-    client.indices.put_template(
+    res = client.indices.put_index_template(
         name="imdb-movies",
+        human=True,
         body={
             "index_patterns": ["imdb-movies-*"],
             "template": {
@@ -32,6 +33,11 @@ def create_index_template(client: OpenSearch):
                             "type": "text",
                             "fields": {"raw": {"type": "keyword"}},
                         },
+                        "description": {
+                            "type": "text",
+                            "fields": {"raw": {"type": "keyword"}},
+                        },
+                        "poster_link": {"type": "keyword"},
                         "stars": {"type": "text"},
                         "genre": {
                             "type": "text",
@@ -42,11 +48,16 @@ def create_index_template(client: OpenSearch):
                         },
                         "meta_score": {"type": "long"},
                         "community_rating": {"type": "double"},
+                        "released_year": {
+                            "type": "date",
+                            "format": "date_optional_time",
+                        },
                     }
                 },
             },
         },
     )
+    print(res)
 
 
 @app.command()
@@ -83,9 +94,12 @@ def main(
             to_json({
                 title : title,
                 director : director,
+                poster_link : poster_link,
+                description : overview,
                 stars : stars,
                 genre : genre,
-                imdb_score : imdb_rating
+                imdb_score : imdb_rating,
+                released_year : strftime(released_year, '%Y-%m-%d')
             }) as body
 
            from imdb_dataset
@@ -96,7 +110,7 @@ def main(
             params={"index_postfix": index_postfix},
         )
 
-        body = '\n'.join(i[0] for i in df.fetchall())
+        body = "\n".join(i[0] for i in df.fetchall())
         res = client.bulk(body=body)
         print(res)
 

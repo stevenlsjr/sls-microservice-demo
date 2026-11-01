@@ -7,15 +7,12 @@ authors = [{ name = "Steve Shea", email = "stevenlsjr@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
     "advanced-alchemy[cli]>=1.11.0",
-    "alembic>=1.20.0",
     "asgiref>=3.12.1",
     "confluent-kafka>=2.16.0",
     "dotenv>=0.9.9",
     "litestar[jwt,standard,opentelemetry]>=2.24.0",
     "msgspec>=0.22.0",
-    "psycopg>=3.3.6",
     "shared-utils",
-    "sqlalchemy>=2.1.4",
     "opentelemetry-instrumentation-asyncio==0.66b1",
     "opentelemetry-instrumentation-dbapi==0.66b1",
     "opentelemetry-instrumentation-exceptions==0.66b1",
@@ -36,6 +33,8 @@ dependencies = [
     "opentelemetry-instrumentation-sqlalchemy==0.66b1",
     "opentelemetry-exporter-otlp>=1.45.1",
     "opentelemetry-distro>=0.66b1",
+    "opensearch-py[async]>=3.2.0",
+    "pydantic-settings>=2.16.2",
 ]
 
 [project.scripts]

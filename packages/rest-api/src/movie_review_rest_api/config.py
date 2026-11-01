@@ -3,11 +3,16 @@ from typing import Self
 
 from msgspec import Struct
 from shared_utils.config import get_kafka_options
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class ConfigSchema(Struct):
+class ConfigSchema(BaseSettings):
+    model_config = SettingsConfigDict()
     db_url: str
-    kafka_options: dict
+
+    @property
+    def kafka_options(self) -> dict[str, str]:
+        return get_kafka_options(os.environ)
 
     oidc_issuer: str = "http://localhost:18080/realms/microservice-app"
     oidc_jwks_url: str = (
@@ -16,19 +21,16 @@ class ConfigSchema(Struct):
 
     kafka_bootstrap_url: str = "http://kafka:9092"
     kafka_topic_prefix: str = "movie_review"
+    opensearch_hosts: list[str] = ["https://localhost:9200"]
+    opensearch_verify_certs: bool = True
+    opensearch_auth: str | None
 
-    @classmethod
-    def parse(cls, env=os.environ) -> Self:
-        fields = {
-            "db_url": env.get("DB_URL", None),
-            "oidc_issuer": env.get("OIDC_ISSUER", None),
-            "oidc_jwks_url": env.get("OIDC_JWKS_URL", None),
-            "kafka_bootstrap_url": env.get("kafka_bootstrap_url", None),
-            "kafka_options": get_kafka_options(env),
-            "kafka_topic_prefix": env.get("kafka_topic_prefix", None),
-        }
-
-        return cls(**{k: v for k, v in fields.items() if v is not None})
+    @property
+    def opensearch_http_auth(self) -> tuple[str, str] | None:
+        if not self.opensearch_auth:
+            return None
+        auth_pair = self.opensearch_auth.split(':', 1)
+        return auth_pair[0], auth_pair[1]
 
 
-cfg = ConfigSchema.parse(os.environ)
+cfg = ConfigSchema.settings_cached()

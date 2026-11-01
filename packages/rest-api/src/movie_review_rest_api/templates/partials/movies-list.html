@@ -1,0 +1,16 @@
+<ul>
+
+  {% for movie in movies %}
+  <li>
+    <h3>{{movie.title}}</h3>
+    <img src="{{movie.poster_link}}" alt="poster for {{movie.title}}"/>
+    <p> 
+      Released {{movie.released_year}}
+      <br>
+      Direced by {{movie.director_name}}
+    </p>
+  </li>
+  {% else %}
+  <li>No movies found</li>
+  {% endfor %}
+</ul>
