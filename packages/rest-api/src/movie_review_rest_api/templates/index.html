@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Hi</h1>
+    <form hx-get="/movies" hx-target="#search_results" , hx-headers='{"Accept": "text/html;hx=1"}'>
+      <label for="search_text">Search</label>
+      <input type="text" name="search_text" id="search_text">
+      <input type="submit" value="Submit">
+    </form>
+
+    <div id="search_results"></div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"
+      integrity="sha384-2OatzQy1H+Zd/IIrjr1TcuDGqLXeHhbooAyJY1KdQMKnr4LZ22k31GBLdYKHmVjg"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

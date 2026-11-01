@@ -2,6 +2,7 @@ import uuid
 from datetime import date, datetime
 from uuid import UUID
 
+import sqlalchemy as sa
 from litestar import Litestar, get
 from litestar.di import NamedDependency
 from litestar.plugins.sqlalchemy import (
@@ -11,10 +12,9 @@ from litestar.plugins.sqlalchemy import (
     base,
 )
 from sqlalchemy import ForeignKey, func, select
+from sqlalchemy.dialects.postgresql import TSVECTOR, to_tsvector
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import TSVECTOR, to_tsvector
 
 from ..config import cfg
 
