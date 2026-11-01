@@ -224,3 +224,7 @@ compose/configs/keycloak/app-client-secret
 # duckdb wal files
 **/*.wal
 **/*.secret.env
+
+.worktrees/*
+
+vol/connector-plugins/
