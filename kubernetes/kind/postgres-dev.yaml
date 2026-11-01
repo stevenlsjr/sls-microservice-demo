@@ -47,12 +47,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
+  namespace: microservice-demo
+
 spec:
   selector:
     app: postgres
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - name: postgres
     protocol: TCP
     port: 5432
     targetPort: 5432
+ 

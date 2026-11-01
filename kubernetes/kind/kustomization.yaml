@@ -12,6 +12,10 @@ secretGenerator:
     namespace: microservice-demo
     envs:
       - ./psql.secret.env
+  - name: psql-env
+    namespace: keycloak
+    envs:
+      - ./psql.secret.env
 resources:
   - ./postgres-dev.yaml
   - initdb-job.yaml

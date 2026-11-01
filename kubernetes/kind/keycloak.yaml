@@ -2,13 +2,14 @@ apiVersion: k8s.keycloak.org/v2beta1
 kind: Keycloak
 metadata:
   name: keycloak
-  namespace: microservice-demo
+  namespace: keycloak
 
 spec:
   instances: 1
+  # image: ghcr.io/fortunen/kete/quick-start-keycloak
   db:
     vendor: postgres
-    host: postgres-db
+    host: postgres.microservice-demo
     usernameSecret:
       name: psql-env
       key: POSTGRES_USER
@@ -29,8 +30,8 @@ spec:
 apiVersion: k8s.keycloak.org/v2beta1
 kind: KeycloakRealmImport
 metadata:
-  name: keycloak-dev-reaml
-  namespace: microservice-demo
+  name: keycloak-dev-realm
+  namespace: keycloak
 
 spec:
   keycloakCRName: keycloak
