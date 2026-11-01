@@ -1,14 +1,15 @@
 from logging import getLogger
 
-from litestar.config.app import AppConfig
-from litestar.plugins import InitPlugin
-from litestar.di import NamedDependency, Provide
-from confluent_kafka.aio import AIOProducer
-from asgiref.sync import async_to_sync
-from . import rest_models
-from shared_utils.schemas import MovieRatingEvent
-from .config import cfg
 import msgspec
+from confluent_kafka.aio import AIOProducer
+from litestar.config.app import AppConfig
+from litestar.di import NamedDependency, Provide
+from litestar.plugins import InitPlugin
+from shared_utils.schemas import MovieRatingEvent
+
+from . import rest_models
+from .config import cfg
+
 log = getLogger(__name__)
 kafka_log = getLogger('kafka')
 

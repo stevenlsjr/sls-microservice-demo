@@ -3,6 +3,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+**/*.DS_Store
 
 # C extensions
 *.so
@@ -227,4 +228,4 @@ compose/configs/keycloak/app-client-secret
 
 .worktrees/*
 
-vol/connector-plugins/
+compose/vol/connector-plugins/

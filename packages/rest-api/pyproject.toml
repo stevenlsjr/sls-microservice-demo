@@ -54,5 +54,5 @@ dev = [
 
 [tool.uv]
 default-groups = ["dev"]
-[tool.uv.sources]
+[tool.uv.sources]   
 shared-utils = { workspace = true }

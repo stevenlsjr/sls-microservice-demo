@@ -30,33 +30,33 @@ services:
     ports:
       - 8080:8080
 
-  # connect:
-  #   user: root
-  #   build:
-  #    context: .
-  #    dockerfile: dbz-connect.dockerfile
-  #    tags: [debezium]
-  #   # image: quay.io/debezium/connect:${DEBEZIUM_VERSION:-3.5.1}
-  #   ports:
-  #     - 8083:8083
-  #   networks:
-  #     default: {}
-  #     # rustfs-network: {}
-  #   depends_on:
-  #     - kafka
-  #     - apicurio
-  #   environment:
-  #     - BOOTSTRAP_SERVERS=kafka:9092
-  #     - GROUP_ID=1
-  #     - CONFIG_STORAGE_TOPIC=my_connect_configs
-  #     - OFFSET_STORAGE_TOPIC=my_connect_offsets
-  #     - STATUS_STORAGE_TOPIC=my_connect_statuses
-  #     - ENABLE_APICURIO_CONVERTERS=true
-  #     - KAFKA_CONNECT_PLUGINS_DIR=/kafka/connect,/opt/connnector-plugins
-  #     - AWS_ACCESS_KEY_ID=rustfsadmin
-  #     - AWS_SECRET_ACCESS_KEY=rustfsadmin
-  #   volumes:
-  #     - ./vol/connector-plugins:/mnt/connector-plugins:Z
+  connect:
+    user: root
+    build:
+     context: .
+    #  dockerfile: dbz-connect.dockerfile
+     tags: [debezium]
+    image: quay.io/debezium/connect:${DEBEZIUM_VERSION:-3.5.1}
+    ports:
+      - 8083:8083
+    networks:
+      default: {}
+      # rustfs-network: {}
+    depends_on:
+      - kafka
+      - apicurio
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+      - ENABLE_APICURIO_CONVERTERS=true
+      - KAFKA_CONNECT_PLUGINS_DIR=/kafka/connect,/opt/connnector-plugins
+      - AWS_ACCESS_KEY_ID=rustfsadmin
+      - AWS_SECRET_ACCESS_KEY=rustfsadmin
+    volumes:
+      - ./vol/connector-plugins:/mnt/connector-plugins:Z
 
   kafka-ui:
     image: kafbat/kafka-ui:096140b
